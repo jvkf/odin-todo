@@ -1,0 +1,283 @@
+:root {
+    --primary-color: #8A2BE2;
+    /* Purple Violet */
+    --accent-color: #9370DB;
+    /* Medium Purple */
+    --text-color: #333;
+    --text-color-light: #fff;
+    /* Main text color */
+    --background-color: #fff;
+    /* Background color */
+    --grey-color: #d4d4d4;
+    /* Border color */
+    --hover-color: #6A5ACD;
+    /* Slate Blue for hover effects */
+    --edit-color: #008000;
+    /* Green for edit */
+    --delete-color: #FF4500;
+    /* Orange Red for delete */
+    --headerHeight: 10vh;
+}
+
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+.sr-only {
+    border: 0 !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    /* 1 */
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    /* 2 */
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
+    /* 3 */
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    font-family: 'Inter', system-ui, sans-serif;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-areas: 'header header '
+        'sidebar dash'
+        'sidebar dash';
+    grid-template-columns: 1fr 3fr;
+    background-color: var(--background-color);
+}
+
+header {
+    grid-area: header;
+    margin: 0;
+    padding: 1rem 0;
+    font-size: 1.6rem;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color-light);
+    height: var(--headerHeight);
+}
+
+button {
+    appearance: none;
+    background-color: var(--background-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: 0.2s ease;
+    width: fit-content;
+}
+
+button:hover,
+button:focus {
+    background-color: var(--hover-color);
+    color: #fff;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+.projects-sidebar {
+    grid-area: sidebar;
+    background-color: var(--grey-color);
+    width: 100%;
+    box-shadow: 3px 3px 6px 0 rgba(0, 0, 0, 0.3);
+    height: calc(100vh - var(--headerHeight));
+}
+
+.projects-sidebar_top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.projects-sidebar_title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--text-color);
+}
+
+.projects-sidebar_container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+    overflow: auto;
+}
+
+.projects-sidebar_card {
+    width: 90%;
+}
+
+.dashboard_project {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0 10px 10px;
+    background-color: var(--accent-color);
+}
+
+.dashboard_project h3 {
+    font-size: 2rem;
+    color: var(--text-color-light);
+}
+
+.dashboard_project-btn {
+    font-size: 1.2rem;
+    border-color: var(--grey-color);
+}
+
+.dashboard_project-btn.edit:hover {
+    background-color: green;
+}
+
+.dashboard_project-btn.remove:hover {
+    background-color: crimson;
+}
+
+.dashboard {
+    grid-area: dash;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background-color);
+    padding: 20px;
+    border: 2px solid var(--accent-color);
+    min-width: 350px;
+    max-width: 500px;
+    position: relative;
+}
+
+.modal-close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.modal-content_form-container {
+    padding-right: 50px;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.modal-content form label {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.modal-content form input {
+    max-width: 300px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 1px 0 1px 10px;
+}
+
+.modal-content form button {
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+/* Mobile styles */
+
+@media screen and (max-width: 600px) {
+    :root {
+        --headerHeight: 15vh;
+    }
+
+    body {
+        grid-template-areas: 'header header'
+            'sidebar sidebar'
+            'dash dash';
+    }
+
+    .projects-sidebar {
+        height: auto;
+        padding-bottom: 20px;
+    }
+}
