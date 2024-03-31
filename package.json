@@ -4,16 +4,20 @@
   "description": "",
   "main": "index.js",
   "private": true,
+  "homepage": "https://jvkf.github.io/odin-todo",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "João Vítor Ferraz",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.10.0",
+    "gh-pages": "^6.1.1",
     "html-webpack-plugin": "^5.6.0",
     "style-loader": "^3.3.4",
     "webpack": "^5.90.2",
