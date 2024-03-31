@@ -1,4 +1,4 @@
-import projectCard from "../components/project-card";
+import projectCard, { addActiveClass } from "../components/project-card";
 import clearContainer from "../helper/clearContainer";
 import { app } from "../index";
 
@@ -17,4 +17,5 @@ export default function loadProjects() {
 
     projectsContainer.appendChild(card);
   });
+  addActiveClass();
 }

@@ -1,5 +1,6 @@
 import { app } from "..";
 import loadProjects from "./loadProjects";
+import loadTodos from "./loadTodos";
 
 export default function removeProjectHandler() {
   const removeBtn = document.querySelector("#removeProjectBtn");
@@ -8,5 +9,6 @@ export default function removeProjectHandler() {
     e.preventDefault();
     app.removeProject();
     loadProjects();
+    loadTodos();
   });
 }

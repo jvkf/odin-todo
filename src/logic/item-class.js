@@ -1,19 +1,7 @@
-export default class ToDoItem {
-  constructor({ title, description, dueDate, priority }) {
-    this.title = title;
-    this.description = description;
-    this.dueDate = dueDate;
-    this.priority = priority;
-    this.complete = false;
-  }
+import { createAppData } from "./localStorage";
 
-  update({
-    title = this.title,
-    description = this.description,
-    dueDate = this.dueDate,
-    priority = this.priority,
-    complete = this.complete,
-  }) {
+export default class ToDoItem {
+  constructor({ title, description, dueDate, priority, complete = false }) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -21,7 +9,16 @@ export default class ToDoItem {
     this.complete = complete;
   }
 
+  update({ title, description, dueDate, priority }) {
+    this.title = title;
+    this.description = description;
+    this.dueDate = dueDate;
+    this.priority = priority;
+    createAppData();
+  }
+
   toggleComplete() {
     this.complete = !this.complete;
+    createAppData();
   }
 }

@@ -1,3 +1,6 @@
+import loadProjects from "../dom/loadProjects";
+import loadTodos from "../dom/loadTodos";
+import { createAppData, loadAppData } from "./localStorage";
 import TodoProject from "./project-class";
 
 export default class App {
@@ -5,35 +8,49 @@ export default class App {
     const projects = [];
     let selectedProject;
 
-    this.init = () => {
-      projects.push(new TodoProject("Home", 0));
-      selectedProject = projects[0];
+    this.createDefaultProject = () => {
+      if (projects.length === 0) {
+        projects.push(new TodoProject("Home"));
+        createAppData();
+      }
     };
 
-    this.addProject = (title) => {
-      projects.push(new TodoProject(title));
+    this.init = () => {
+      loadAppData();
+      selectedProject = projects[0];
+      loadProjects();
+      loadTodos();
+    };
+
+    this.addProject = (project, isAddingFromDOM = true) => {
+      projects.push(project);
+      if (isAddingFromDOM) {
+        createAppData();
+      }
     };
 
     this.setProject = (title) => {
       selectedProject = projects.find((project) => project.title === title);
     };
 
+    this.findSelectedProjectIndex = () => {
+      let selectedProjectTitle = selectedProject.title;
+
+      return projects.findIndex(
+        (project) => project.title === selectedProjectTitle
+      );
+    };
+
     this.removeProject = () => {
-      function findProjectIndex() {
-        let selectedProjectTitle = selectedProject.title;
+      projects.splice(this.findSelectedProjectIndex(), 1);
 
-        return projects.findIndex(
-          (project) => project.title === selectedProjectTitle
-        );
-      }
-
-      projects.splice(findProjectIndex(), 1);
-
-      if (projects.length === 0) {
-        projects.push(new TodoProject("Home"));
-      }
-
+      this.createDefaultProject();
+      createAppData();
       selectedProject = projects[projects.length - 1];
+    };
+
+    this.clearProjects = () => {
+      projects.splice(0, -1);
     };
 
     this.getProjects = () => {

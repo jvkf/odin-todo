@@ -1,4 +1,4 @@
-import ToDoItem from "./item-class";
+import { createAppData } from "./localStorage";
 
 export default class TodoProject {
   constructor(title) {
@@ -7,19 +7,30 @@ export default class TodoProject {
   }
 
   getTodos() {
-    return this.todos;
+    return [...this.todos];
   }
 
-  addTodo(todoForm) {
-    const newTodoItem = new ToDoItem(todoForm);
-    this.todos.push(newTodoItem);
+  addTodo(todo, isAddingFromDOM = true) {
+    this.todos.push(todo);
+    if (isAddingFromDOM) {
+      createAppData();
+    }
   }
 
-  removeTodo(id) {
-    this.todos.splice(id, 1);
+  findTodoIndex(todo) {
+    let selectedTodoTitle = todo.title;
+
+    return this.todos.findIndex((todo) => todo.title === selectedTodoTitle);
+  }
+
+  removeTodo(todo) {
+    const index = this.findTodoIndex(todo);
+    this.todos.splice(index, 1);
+    createAppData();
   }
 
   updateTitle(newTitle) {
     this.title = newTitle;
+    createAppData();
   }
 }

@@ -173,13 +173,25 @@ h1 {
     width: 90%;
 }
 
+.projects-sidebar_card.active {
+    background-color: var(--accent-color);
+    color: var(--text-color-light);
+}
+
 .dashboard_project {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+    background-color: var(--accent-color);
+}
+
+.dashboard_project-options {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 15px;
-    padding: 10px 0 10px 10px;
-    background-color: var(--accent-color);
 }
 
 .dashboard_project h3 {
@@ -187,7 +199,8 @@ h1 {
     color: var(--text-color-light);
 }
 
-.dashboard_project-btn {
+.dashboard_project-btn,
+.dashboard_create-todo-btn {
     font-size: 1.2rem;
     border-color: var(--grey-color);
 }
@@ -198,6 +211,10 @@ h1 {
 
 .dashboard_project-btn.remove:hover {
     background-color: crimson;
+}
+
+.dashboard_create-todo-btn:hover {
+    background-color: var(--hover-color);
 }
 
 .dashboard {
@@ -251,17 +268,102 @@ h1 {
     font-weight: 700;
 }
 
-.modal-content form input {
+.modal-content form input,
+.modal-content form select,
+.modal-content textarea {
     max-width: 300px;
     font-size: 1.6rem;
     font-weight: 500;
-    padding: 1px 0 1px 10px;
+    padding: 2px 0 2px 10px;
+    border: 1px solid black;
+}
+
+.modal-content textarea {
+    font-weight: 400;
 }
 
 .modal-content form button {
     font-weight: 600;
     font-size: 1.6rem;
 }
+
+.dashboard_todos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 250px);
+    gap: 50px;
+    padding: 2rem;
+}
+
+.todo-item {
+    max-width: 250px;
+    background-color: var(--background-color);
+    border: 1px solid var(--accent-color);
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    position: relative;
+}
+
+.todo-item.completed {
+    background-color: rgba(128, 255, 119, 0.15);
+}
+
+.todo-item__container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 10px;
+}
+
+.todo-item__checkbox-container {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.todo-item__due-date {
+    font-weight: 700;
+}
+
+.todo-item__container {
+    font-size: 1.2rem;
+}
+
+.todo-item__ellipsis-container {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+
+.todo-item__ellipsis-btn {
+    border: none;
+    padding: 2px 6px;
+}
+
+.todo-item__menu-container {
+    display: none;
+}
+
+.todo-item__menu-container.show-menu {
+    display: block;
+    position: absolute;
+    left: 120%;
+    top: 0;
+    padding: 20px 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    z-index: 10;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.todo-item__menu-container button {
+    border: 0;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 
 /* Mobile styles */
 
@@ -279,5 +381,9 @@ h1 {
     .projects-sidebar {
         height: auto;
         padding-bottom: 20px;
+    }
+
+    .todo-item {
+        max-width: 200px;
     }
 }
