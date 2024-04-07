@@ -1,11 +1,10 @@
-import todoCard from "../components/todo-card";
+import todoCardProto from "../components/todo-card";
 import clearContainer from "../helper/clearContainer";
-import { app } from "../index";
 
 const todosContainer = document.querySelector(".dashboard_todos");
 
-export default function loadTodos() {
-  const todos = app.getCurrentProject().getTodos();
+export default function loadTodos(currentProject) {
+  const todos = currentProject.getTodos();
   const areThereTodosInDOM = todosContainer.children.length > 0;
 
   if (areThereTodosInDOM) {
@@ -13,7 +12,7 @@ export default function loadTodos() {
   }
 
   todos.forEach((todo) => {
-    const card = todoCard(todo);
+    const card = todoCardProto(todo, currentProject);
 
     todosContainer.appendChild(card);
   });

@@ -1,3 +1,14 @@
+export function closeModal() {
+  const modal = document.querySelector(".modal");
+  modal.remove();
+}
+
+function closeModalOnOutsideClick(event) {
+  if (event.target === this) {
+    closeModal();
+  }
+}
+
 export default function createModal() {
   const modal = document.createElement("div");
   modal.className = "modal";
@@ -20,15 +31,4 @@ export default function createModal() {
   window.addEventListener("click", closeModalOnOutsideClick.bind(modal));
 
   return modal;
-}
-
-export function closeModal() {
-  const modal = document.querySelector(".modal");
-  modal.remove();
-}
-
-function closeModalOnOutsideClick(event) {
-  if (event.target === this) {
-    closeModal();
-  }
 }

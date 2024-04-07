@@ -1,11 +1,10 @@
-import projectCard, { addActiveClass } from "../components/project-card";
+import projectCard from "../components/project-card";
 import clearContainer from "../helper/clearContainer";
-import { app } from "../index";
 
 const projectsContainer = document.querySelector(".projects-sidebar_container");
 
-export default function loadProjects() {
-  const projects = app.getProjects();
+export default function loadProjects({ getProjects, setProject }) {
+  const projects = getProjects();
   const areThereProjectsInDOM = projectsContainer.children.length > 0;
 
   if (areThereProjectsInDOM) {
@@ -13,9 +12,8 @@ export default function loadProjects() {
   }
 
   projects.forEach((project) => {
-    const card = projectCard(project.title);
+    const card = projectCard(project.title, setProject);
 
     projectsContainer.appendChild(card);
   });
-  addActiveClass();
 }

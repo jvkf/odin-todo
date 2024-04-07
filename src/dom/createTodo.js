@@ -1,35 +1,32 @@
-import { app } from "..";
 import createModal, { closeModal } from "../components/modal";
-import todoFormTemplate, {
-  handleFormData,
-} from "../components/todoFormTemplate";
+import todoFormProto, { handleTodoFormData } from "../components/todoFormProto";
+import { todoChangedEvent } from "../helper/eventBus";
 import ToDoItem from "../logic/item-class";
-import loadTodos from "./loadTodos";
 
-export default function createTodoHandler() {
+export default function createTodoHandler({ getCurrentProject }) {
   const btn = document.querySelector("#createTodoBtn");
   const modal = createModal();
-  const projectForm = todoFormTemplate();
-  projectForm.setAttribute("id", "create-todo-form");
-  projectForm.addEventListener("submit", handleCreateTodo);
+  const modalFormContainer = modal.querySelector(
+    ".modal-content_form-container"
+  );
+  const projectForm = todoFormProto("Create");
 
-  modal.querySelector(".modal-content_form-container").appendChild(projectForm);
+  projectForm.setAttribute("id", "create-todo-form");
+  projectForm.addEventListener("submit", (e) => {
+    const todoFormObj = handleTodoFormData();
+    const newTodoItem = new ToDoItem(todoFormObj);
+    const project = getCurrentProject();
+
+    e.preventDefault();
+    project.addTodo(newTodoItem);
+    document.dispatchEvent(todoChangedEvent);
+    projectForm.reset();
+    closeModal();
+  });
+
+  modalFormContainer.appendChild(projectForm);
 
   btn.addEventListener("click", () => {
     document.body.appendChild(modal);
   });
-}
-
-function handleCreateTodo(event) {
-  event.preventDefault();
-  const todoFormObj = handleFormData();
-
-  const currentProject = app.getCurrentProject();
-  const newTodoItem = new ToDoItem(todoFormObj);
-  currentProject.addTodo(newTodoItem);
-  loadTodos();
-
-  const todoForm = document.querySelector("#create-todo-form");
-  todoForm.reset();
-  closeModal();
 }

@@ -1,4 +1,6 @@
-export default function todoFormTemplate() {
+import { format } from "date-fns";
+
+export default function todoFormProto(textForButton, inputData = {}) {
   const form = document.createElement("form");
 
   const titleLabel = document.createElement("label");
@@ -10,6 +12,10 @@ export default function todoFormTemplate() {
   titleInput.setAttribute("name", "todo-title");
   titleInput.setAttribute("placeholder", "Enter title");
   titleInput.setAttribute("required", "");
+  // Fill input if data provided
+  if (inputData.title) {
+    titleInput.value = inputData.title;
+  }
 
   const descriptionLabel = document.createElement("label");
   descriptionLabel.setAttribute("for", "todo-description");
@@ -18,6 +24,10 @@ export default function todoFormTemplate() {
   descriptionInput.setAttribute("id", "todo-description");
   descriptionInput.setAttribute("name", "todo-description");
   descriptionInput.setAttribute("placeholder", "Enter description");
+  // Fill input if data provided
+  if (inputData.description) {
+    descriptionInput.value = inputData.description;
+  }
 
   const dueDateLabel = document.createElement("label");
   dueDateLabel.setAttribute("for", "todo-due-date");
@@ -26,6 +36,10 @@ export default function todoFormTemplate() {
   dueDateInput.setAttribute("type", "datetime-local");
   dueDateInput.setAttribute("id", "todo-due-date");
   dueDateInput.setAttribute("name", "todo-due-date");
+  // Fill input if data provided
+  if (inputData.dueDate) {
+    dueDateInput.value = format(inputData.dueDate, "yyyy-MM-dd HH:mm");
+  }
 
   const priorityLabel = document.createElement("label");
   priorityLabel.setAttribute("for", "todo-priority");
@@ -40,10 +54,14 @@ export default function todoFormTemplate() {
     option.textContent = optionText;
     priorityInput.appendChild(option);
   });
+  // Fill input if data provided
+  if (inputData.priority) {
+    priorityInput.value = inputData.priority;
+  }
 
   const button = document.createElement("button");
   button.setAttribute("type", "submit");
-  button.textContent = "Create";
+  button.textContent = textForButton;
 
   form.appendChild(titleLabel);
   form.appendChild(titleInput);
@@ -58,7 +76,7 @@ export default function todoFormTemplate() {
   return form;
 }
 
-export function handleFormData() {
+export function handleTodoFormData() {
   const title = document.querySelector("#todo-title").value;
   const description = document.querySelector("#todo-description").value;
   const dueDateValue = document.querySelector("#todo-due-date").value;

@@ -1,41 +1,22 @@
-import { format } from "date-fns";
 import createModal, { closeModal } from "../components/modal";
-import todoFormTemplate, {
-  handleFormData,
-} from "../components/todoFormTemplate";
-import loadTodos from "./loadTodos";
+import todoFormProto, { handleTodoFormData } from "../components/todoFormProto";
+import { todoChangedEvent } from "../helper/eventBus";
 
 export default function editTodoHandler(todoRef) {
   const modal = createModal();
-  const editTodoForm = todoFormTemplate();
+  const editTodoForm = todoFormProto("Edit", todoRef);
   editTodoForm.setAttribute("id", "edit-todo-form");
-  editTodoForm.addEventListener("submit", handleEditTodo.bind(null, todoRef));
-  updateInputs(editTodoForm, todoRef);
+  editTodoForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const todoFormObj = handleTodoFormData();
+    todoRef.update(todoFormObj);
+    document.dispatchEvent(todoChangedEvent);
+    closeModal();
+  });
 
   modal
     .querySelector(".modal-content_form-container")
     .appendChild(editTodoForm);
 
   return modal;
-}
-
-function handleEditTodo(todoRef, event) {
-  event.preventDefault();
-  const todoFormObj = handleFormData();
-
-  todoRef.update(todoFormObj);
-  loadTodos();
-
-  closeModal();
-}
-
-function updateInputs(editTodoForm, todoRef) {
-  editTodoForm.querySelector('button[type="submit"]').textContent = "Edit";
-  editTodoForm.querySelector("#todo-title").value = todoRef.title;
-  editTodoForm.querySelector("#todo-description").value = todoRef.description;
-  editTodoForm.querySelector("#todo-due-date").value = format(
-    todoRef.dueDate,
-    "yyyy-MM-dd HH:mm"
-  );
-  editTodoForm.querySelector("#todo-priority").value = todoRef.priority;
 }

@@ -1,14 +1,11 @@
-import { app } from "..";
-import loadProjects from "./loadProjects";
-import loadTodos from "./loadTodos";
+import { projectChangedEvent } from "../helper/eventBus";
 
-export default function removeProjectHandler() {
+export default function removeProjectHandler({ removeProject }) {
   const removeBtn = document.querySelector("#removeProjectBtn");
 
   removeBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    app.removeProject();
-    loadProjects();
-    loadTodos();
+    removeProject();
+    document.dispatchEvent(projectChangedEvent);
   });
 }

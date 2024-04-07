@@ -1,9 +1,8 @@
-import loadProjects from "../dom/loadProjects";
-import { app } from "../index";
+import { projectChangedEvent } from "../helper/eventBus";
 import TodoProject from "../logic/project-class";
 import { closeModal } from "./modal";
 
-export default function createProjectForm() {
+function addProjectFormProto() {
   const form = document.createElement("form");
   form.setAttribute("id", "project-form");
 
@@ -26,21 +25,23 @@ export default function createProjectForm() {
   form.appendChild(projectTitleInput);
   form.appendChild(button);
 
-  form.addEventListener("submit", handleFormSubmission);
-
   return form;
 }
 
-function handleFormSubmission(event) {
-  event.preventDefault();
-  const projectTitleInput = document.querySelector("#project-title");
-  const projectTitle = projectTitleInput.value;
-  const project = new TodoProject(projectTitle);
+export default function createProjectForm(addProjectFn) {
+  const projectFormInst = addProjectFormProto();
 
-  app.addProject(project);
-  loadProjects();
+  projectFormInst.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const projectTitleInput = document.querySelector("#project-title");
+    const projectTitle = projectTitleInput.value;
+    const project = new TodoProject(projectTitle);
 
-  const projectForm = document.querySelector("#project-form");
-  projectForm.reset();
-  closeModal();
+    addProjectFn(project);
+    document.dispatchEvent(projectChangedEvent);
+    projectFormInst.reset();
+    closeModal();
+  });
+
+  return projectFormInst;
 }

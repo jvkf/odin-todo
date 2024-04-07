@@ -1,8 +1,7 @@
-import { app } from "..";
-import loadProjects from "../dom/loadProjects";
+import { projectChangedEvent } from "../helper/eventBus";
 import { closeModal } from "./modal";
 
-export default function createEditProjectForm() {
+function editProjectFormProto() {
   const form = document.createElement("form");
   form.setAttribute("id", "edit-project-form");
 
@@ -25,24 +24,20 @@ export default function createEditProjectForm() {
   form.appendChild(projectTitleInput);
   form.appendChild(button);
 
-  form.addEventListener("submit", handleEditFormSubmission);
-
   return form;
 }
 
-export function updateProjectTitleInput(formContainer) {
-  const input = formContainer.querySelector("#edit-project-title");
-  const currentProject = app.getCurrentProject();
+export default function createEditProjectForm(getCurrentProjectFn) {
+  const editFormInst = editProjectFormProto();
+  editFormInst.addEventListener("submit", (e) => {
+    const projectTitleInput = document.querySelector("#edit-project-title");
+    const newProjectTitle = projectTitleInput.value;
 
-  input.value = currentProject.title;
-}
+    e.preventDefault();
+    getCurrentProjectFn().updateTitle(newProjectTitle);
+    document.dispatchEvent(projectChangedEvent);
+    closeModal();
+  });
 
-function handleEditFormSubmission(event) {
-  event.preventDefault();
-  const projectTitleInput = document.querySelector("#edit-project-title");
-  const newProjectTitle = projectTitleInput.value;
-
-  app.getCurrentProject().updateTitle(newProjectTitle);
-  loadProjects();
-  closeModal();
+  return editFormInst;
 }

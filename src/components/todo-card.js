@@ -1,11 +1,14 @@
 import { format, formatDistanceToNow } from "date-fns";
-import { app } from "..";
 import editTodoHandler from "../dom/editTodo";
-import loadTodos from "../dom/loadTodos";
+import { todoChangedEvent } from "../helper/eventBus";
 
-export default function todoCard(todo) {
-  const todoItem = document.createElement("div");
-  todoItem.classList.add("todo-item");
+export function addCompleteClass(todoItemCard) {
+  todoItemCard.classList.toggle("completed");
+}
+
+export default function todoCardProto(todo, currentProject) {
+  const todoItemCard = document.createElement("div");
+  todoItemCard.classList.add("todo-item");
 
   const ellipsisContainer = document.createElement("div");
   ellipsisContainer.classList.add("todo-item__ellipsis-container");
@@ -14,9 +17,9 @@ export default function todoCard(todo) {
   ellipsisBtn.setAttribute("type", "button");
   ellipsisBtn.classList.add("todo-item__ellipsis-btn");
   ellipsisBtn.innerHTML = `
-    <i class="fa-solid fa-ellipsis-vertical"></i>
-    <span class="sr-only">Todo Options</span>
-  `;
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+      <span class="sr-only">Todo Options</span>
+    `;
 
   const menuContainer = document.createElement("div");
   menuContainer.classList.add("todo-item__menu-container");
@@ -67,9 +70,13 @@ export default function todoCard(todo) {
   checkbox.classList.add("todo-item__complete-checkbox");
   if (todo.complete) {
     checkbox.checked = true;
-    addCompleteClass(todoItem);
+    addCompleteClass(todoItemCard);
   }
-  checkbox.addEventListener("click", handleToggleComplete.bind(checkbox, todo));
+  checkbox.addEventListener("click", () => {
+    todo.toggleComplete();
+    addCompleteClass(todoItemCard);
+    document.dispatchEvent(todoChangedEvent);
+  });
 
   const label = document.createElement("label");
   label.setAttribute("for", "complete-checkbox");
@@ -85,40 +92,21 @@ export default function todoCard(todo) {
   container.appendChild(priority);
   container.appendChild(checkboxContainer);
 
-  todoItem.appendChild(ellipsisContainer);
-  todoItem.appendChild(container);
+  todoItemCard.appendChild(ellipsisContainer);
+  todoItemCard.appendChild(container);
 
-  ellipsisBtn.addEventListener("click", toggleMenu.bind(menuContainer));
-  removeBtn.addEventListener("click", removeTodoBtnHandler.bind(todo));
-  editBtn.addEventListener("click", editTodoBtnHandler.bind(todo));
+  ellipsisBtn.addEventListener("click", () => {
+    menuContainer.classList.toggle("show-menu");
+  });
+  removeBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    currentProject.removeTodo(todo);
+    document.dispatchEvent(todoChangedEvent);
+  });
+  editBtn.addEventListener("click", () => {
+    const editFormModal = editTodoHandler(todo);
+    document.body.appendChild(editFormModal);
+  });
 
-  return todoItem;
-}
-
-function handleToggleComplete(todo) {
-  todo.toggleComplete();
-  addCompleteClass(this.closest(".todo-item"));
-}
-
-function addCompleteClass(card) {
-  card.classList.toggle("completed");
-}
-
-function toggleMenu() {
-  const menuContainer = this;
-  menuContainer.classList.toggle("show-menu");
-}
-
-function removeTodoBtnHandler() {
-  const todo = this;
-  const currentProject = app.getCurrentProject();
-
-  currentProject.removeTodo(todo);
-  loadTodos();
-}
-
-function editTodoBtnHandler() {
-  const todo = this;
-  const editFormModal = editTodoHandler(todo);
-  document.body.appendChild(editFormModal);
+  return todoItemCard;
 }
