@@ -2,9 +2,8 @@
   "name": "odin-todo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "private": true,
-  "homepage": "https://jvkf.github.io/odin-todo",
+  "homepage": "https://p1padev.github.io/odin-todo",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --open --config webpack.dev.js",
@@ -13,7 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],
-  "author": "João Vítor Ferraz",
+  "author": "João Vítor Ferraz (@p1padev)",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.10.0",
